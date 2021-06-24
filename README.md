@@ -1,0 +1,1 @@
+# redbox-magento-extension

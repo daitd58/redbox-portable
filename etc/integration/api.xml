@@ -1,0 +1,13 @@
+<integrations>
+    <integration name="RedBoxIntegration">
+        <resources>
+            <resource name="Magento_Sales::sales" />
+            <resource name="Magento_Sales::sales_operation" />
+            <resource name="Magento_Sales::sales_order" />
+            <resource name="Magento_Sales::actions" />
+            <resource name="Magento_Sales::create" />
+            <resource name="Magento_Sales::cancel" />
+            <resource name="Magento_Sales::actions_edit" />
+        </resources>
+    </integration>
+</integrations>

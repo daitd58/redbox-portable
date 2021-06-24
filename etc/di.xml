@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * (c) Redbox Parcel Lockers <thamer@redboxsa.com>
+ * This source file is subject to the license that is bundled
+ * with this source code in the file LICENSE.
+ *
+ * Built by Redbox Technologies, <thamer@redboxsa.com>
+ */
+-->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Sales\Api\OrderManagementInterface">
+        <plugin name="PlaceAfterPlugin" type="Redbox\Portable\Plugin\Order\PlaceAfterPlugin" sortOrder="99" />
+    </type>
+    <preference for="Redbox\Portable\Api\Data\AddressRepositoryInterface" type="Redbox\Portable\Model\AddressRepository"/>
+    <preference for="Redbox\Portable\Api\Data\AddressInterface" type="Redbox\Portable\Model\Address"/>
+
+    <type name="Redbox\Portable\Block\Adminhtml\Order\AbstractOrder">
+        <arguments>
+            <argument name="addressRepository" xsi:type="object">Redbox\Portable\Api\Data\AddressRepositoryInterface</argument>
+            <argument name="quoteFactory" xsi:type="object">Magento\Quote\Model\QuoteFactory</argument>
+        </arguments>
+    </type>
+</config>

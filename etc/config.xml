@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <carriers>
+            <redbox>
+                <active>0</active>
+                <production>1</production>
+                <price>5.00</price>
+                <tax_including>0</tax_including>
+                <name>Ship to RedBox Pickup point</name>
+                <title>Redbox</title>
+                <description>Redbox provides smart parcel lockers services to customers in the Kingdom of Saudi Arabia.</description>
+                <sort_order>15</sort_order>
+                <model>Redbox\Portable\Model\Carrier\Redbox</model>
+                <specificerrmsg>RedBox is not available. To use this delivery method, please contact us.</specificerrmsg>
+                <sallowspecific>0</sallowspecific>
+            </redbox>
+        </carriers>
+    </default>
+</config>

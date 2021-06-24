@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+/**
+  * (c) Redbox Parcel Lockers <thamer@redboxsa.com>
+ * This source file is subject to the license that is bundled
+ * with this source code in the file LICENSE.
+ *
+ * Built by Redbox Technologies, <thamer@redboxsa.com>
+ */
+-->
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="order_cancel_after">
+        <observer name="redbox_portable_observer_cancel_order_after" instance="Redbox\Portable\Observer\CancelOrderAfter" />
+    </event>
+    <event name="sales_order_shipment_save_after">
+        <observer name="redbox_portable_observer_order_shipment_save_after" instance="Redbox\Portable\Observer\SaveOrderShipmentAfter" />
+    </event>
+</config>

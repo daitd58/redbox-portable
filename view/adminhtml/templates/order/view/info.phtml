@@ -1,0 +1,55 @@
+<?php
+/**
+ * (c) RedboxSA Parcel Lockers <thamer@redboxsa.com>
+ * This source file is subject to the license that is bundled
+ * with this source code in the file LICENSE.
+ *
+ * Built by Redbox Technologies, <thamer@redboxsa.com>
+ */
+?>
+
+<?php /** @var $block \Magento\Shipping\Block\Adminhtml\View */ ?>
+<?php $order = $block->getOrder() ?>
+<?php if ($order->getIsVirtual()) :
+    return '';
+endif; ?>
+
+<?php /** @var \Redbox\Portable\ViewModel\Adminhtml\Order\Shipment $rbViewModel */
+$rbViewModel = $block->getData('rbViewModel'); ?>
+
+<?php /* Shipping Method */ ?>
+<div class="admin__page-section-item order-shipping-method">
+    <div class="admin__page-section-item-title">
+        <span class="title"><?= /* @noEscape */ __('Shipping &amp; Handling Information') ?></span>
+    </div>
+    <div class="admin__page-section-item-content">
+        <?php  if ($order->getTracksCollection()->getSize()) : ?>
+            <p><a href="#" id="linkId" onclick="popWin('<?= /* @noEscape */ $this->helper('Magento\Shipping\Helper\Data')->getTrackingPopupUrlBySalesModel($order) ?>','trackorder','width=800,height=600,resizable=yes,scrollbars=yes')" title="<?= /* @noEscape */ __('Track Order') ?>"><?= /* @noEscape */ __('Track Order') ?></a></p>
+        <?php endif; ?>
+        <?php if ($order->getShippingDescription()) : ?>
+            <strong><?= /* @noEscape */ $block->escapeHtml($order->getShippingDescription()) ?></strong>
+
+            <?php if ($this->helper('Magento\Tax\Helper\Data')->displayShippingPriceIncludingTax()) : ?>
+                <?php $_excl = $block->displayShippingPriceInclTax($order); ?>
+            <?php else : ?>
+                <?php $_excl = $block->displayPriceAttribute('shipping_amount', false, ' '); ?>
+            <?php endif; ?>
+            <?php $_incl = $block->displayShippingPriceInclTax($order); ?>
+
+            <?= /* @noEscape */ $_excl ?>
+            <?php if ($this->helper('Magento\Tax\Helper\Data')->displayShippingBothPrices() && $_incl != $_excl) : ?>
+                (<?= /* @noEscape */ __('Incl. Tax') ?> <?= /* @noEscape */ $_incl ?>)
+            <?php endif; ?>
+        <?php else : ?>
+            <?= /* @noEscape */ __('No shipping information available') ?>
+        <?php endif; ?>
+
+        <?php if ($rbViewModel && $rbViewModel->isShippingRedbox($order)) : ?>
+            <ul style="list-style: none; padding-top: 20px;">
+                <?php if ($rbViewModel->getUrlShippingLabel()) : ?>
+                <li><a href="<?php /* @noEscape */ echo $rbViewModel->getUrlShippingLabel() ?>" target="_blank"><?= /* @noEscape */ __('Shipping label') ?></a></li>
+                <?php endif; ?>
+            </ul>
+        <?php endif; ?>
+    </div>
+</div>
