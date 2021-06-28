@@ -2,7 +2,7 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
     <default>
         <carriers>
-            <redbox>
+            <redboxportable>
                 <active>0</active>
                 <production>1</production>
                 <price>5.00</price>
@@ -14,7 +14,7 @@
                 <model>Redbox\Portable\Model\Carrier\Redbox</model>
                 <specificerrmsg>RedBox is not available. To use this delivery method, please contact us.</specificerrmsg>
                 <sallowspecific>0</sallowspecific>
-            </redbox>
+            </redboxportable>
         </carriers>
     </default>
 </config>

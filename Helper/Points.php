@@ -56,7 +56,7 @@ class Points
     public function getApiToken()
     {
         return $this->scopeConfig->getValue(
-            'carriers/redbox/api_token',
+            'carriers/redboxportable/api_token',
             ScopeInterface::SCOPE_STORE
         );
 
@@ -68,7 +68,7 @@ class Points
     public function getProductionMode()
     {
         return $this->scopeConfig->getValue(
-            'carriers/redbox/production',
+            'carriers/redboxportable/production',
             ScopeInterface::SCOPE_STORE
         );
 

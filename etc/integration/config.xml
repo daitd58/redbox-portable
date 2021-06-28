@@ -1,5 +1,5 @@
 <integrations>
-    <integration name="RedBoxIntegration">
+    <integration name="RedBoxPortableIntegration">
        <email>anhth@redboxsa.com</email>
        <endpoint_url>https://app.redboxsa.com/magento/token</endpoint_url>
        <identity_link_url>https://app.redboxsa.com/magento/login</identity_link_url>

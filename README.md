@@ -1,1 +1,1 @@
-# redbox-magento-extension
+# redbox-portable

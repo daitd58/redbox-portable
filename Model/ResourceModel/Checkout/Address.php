@@ -25,6 +25,6 @@ class Address extends AbstractDb
      */
     public function _construct()
     {
-        $this->_init('redbox_checkout_address', AddressInterface::ENTITY_ID);
+        $this->_init('redbox_portable_checkout_address', AddressInterface::ENTITY_ID);
     }
 }

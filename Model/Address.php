@@ -23,12 +23,12 @@ class Address extends AbstractModel implements AddressInterface
     /**
      * @var string
      */
-    public $_eventPrefix = 'redbox_checkout_address';
+    public $_eventPrefix = 'redbox_portable_checkout_address';
 
     /**
      * @var string
      */
-    public $_eventObject = 'checkout_address';
+    public $_eventObject = 'portable_checkout_address';
     // @codingStandardsIgnoreEnd
 
     /**

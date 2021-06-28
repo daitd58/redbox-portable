@@ -26,8 +26,6 @@ class Shipment implements \Magento\Framework\View\Element\Block\ArgumentInterfac
      */
     protected $quoteRepository;
 
-    protected $pointId;
-
     protected $order;
 
     protected $shippingAddress;
@@ -60,9 +58,8 @@ class Shipment implements \Magento\Framework\View\Element\Block\ArgumentInterfac
                     $quoteAddressId = $quote->getShippingAddress()->getId();
                     if ($quoteAddressId) {
                         $address = $this->addressRepository->getByQuoteAddressId($quoteAddressId);
-                        $this->pointId = $address->getPointId();
                         $this->urlShippingLabel = $address->getUrlShippingLabel();
-                        if ($this->pointId) {
+                        if ($this->urlShippingLabel) {
                             return true;
                         }
                     }

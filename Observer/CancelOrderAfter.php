@@ -65,8 +65,6 @@ class CancelOrderAfter implements ObserverInterface
                 $response = curl_exec($curl);
 
                 $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-                $this->logger->info('cancelOrder' . $response);
-                $this->logger->info('cancelOrder' . $status);
 
                 curl_close($curl);
             }

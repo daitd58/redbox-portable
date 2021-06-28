@@ -2,9 +2,14 @@
 
 namespace Redbox\Portable\Model\Carrier;
 
-use Magento\Quote\Model\Quote\Address\RateRequest;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Shipping\Model\Carrier\AbstractCarrier;
 use Magento\Shipping\Model\Carrier\CarrierInterface;
+use Magento\Shipping\Model\Rate\ResultFactory;
+use Magento\Quote\Model\Quote\Address\RateRequest;
+use Magento\Quote\Model\Quote\Address\RateResult\ErrorFactory;
+use Magento\Quote\Model\Quote\Address\RateResult\MethodFactory;
+use Psr\Log\LoggerInterface;
 
 /**
  * Redbox shipping model
@@ -24,35 +29,41 @@ class Redbox extends AbstractCarrier implements CarrierInterface
     protected $_isFixed = true;
 
     /**
-     * @var \Magento\Shipping\Model\Rate\ResultFactory
+     * @var ResultFactory
      */
     private $rateResultFactory;
 
     /**
-     * @var \Magento\Quote\Model\Quote\Address\RateResult\MethodFactory
+     * @var MethodFactory
      */
     private $rateMethodFactory;
 
     /**
-     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
-     * @param \Magento\Quote\Model\Quote\Address\RateResult\ErrorFactory $rateErrorFactory
-     * @param \Psr\Log\LoggerInterface $logger
-     * @param \Magento\Shipping\Model\Rate\ResultFactory $rateResultFactory
-     * @param \Magento\Quote\Model\Quote\Address\RateResult\MethodFactory $rateMethodFactory
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
+     * @param ScopeConfigInterface $scopeConfig
+     * @param ErrorFactory $rateErrorFactory
+     * @param LoggerInterface $logger
+     * @param ResultFactory $rateResultFactory
+     * @param MethodFactory $rateMethodFactory
      * @param array $data
      */
     public function __construct(
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-        \Magento\Quote\Model\Quote\Address\RateResult\ErrorFactory $rateErrorFactory,
-        \Psr\Log\LoggerInterface $logger,
-        \Magento\Shipping\Model\Rate\ResultFactory $rateResultFactory,
-        \Magento\Quote\Model\Quote\Address\RateResult\MethodFactory $rateMethodFactory,
+        ScopeConfigInterface $scopeConfig,
+        ErrorFactory $rateErrorFactory,
+        LoggerInterface $logger,
+        ResultFactory $rateResultFactory,
+        MethodFactory $rateMethodFactory,
         array $data = []
     ) {
         parent::__construct($scopeConfig, $rateErrorFactory, $logger, $data);
 
         $this->rateResultFactory = $rateResultFactory;
         $this->rateMethodFactory = $rateMethodFactory;
+        $this->logger = $logger;
     }
 
     /**
@@ -80,7 +91,12 @@ class Redbox extends AbstractCarrier implements CarrierInterface
      */
     public function collectRates(RateRequest $request)
     {
+        $cities = ["الرياض", "Riyadh", "الخرج", "Kharj", "الظهران", "Dhahran", "الجبيل", "Jubail", "الخبر", "Khubar", "راس تنورة", "Ras Tannurah", "الدرعية", "Diriyah", "جدة", "Jeddah", "الدمام", "Dammam", "الهفوف‎", "Al Hofuf"];
         if (!$this->getConfigFlag('active')) {
+            return false;
+        }
+
+        if ($request->getDestCountryId() !== 'SA' || !array_search(strtolower($request->getDestCity()), array_map('strtolower', $cities))) {
             return false;
         }
 

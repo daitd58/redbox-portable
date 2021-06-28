@@ -59,7 +59,6 @@ class SaveOrderShipmentAfter implements ObserverInterface
                 $this->curl->setHeaders($headers);
                 $this->curl->post($url, json_encode($fields));
                 $response = $this->curl->getBody();
-                $this->logger->info('$response------' . $response);
             }
         }
     }

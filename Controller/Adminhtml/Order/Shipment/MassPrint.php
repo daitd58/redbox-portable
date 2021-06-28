@@ -115,7 +115,6 @@ class MassPrint extends \Magento\Sales\Controller\Adminhtml\Order\AbstractMassAc
             }
         }
 
-        $this->logger->info('MassPrint' . implode(",", $ids));
         if (!empty($ids)) {
             $apiToken   = $this->helper->getApiToken();
             $apiEndpoint   = $this->helper->getApiEndpoint();
@@ -134,7 +133,6 @@ class MassPrint extends \Magento\Sales\Controller\Adminhtml\Order\AbstractMassAc
             $response = $this->curl->getBody();
             $response_json = json_decode($response, true);
             if ($response_json['success'] && isset($response_json['url'])) {
-                $this->logger->info('MassPrint url: ' . $response_json['url']);
                 return $this->resultRedirectFactory->create()->setUrl($response_json['url']);
             }
         }

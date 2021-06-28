@@ -10,6 +10,9 @@
 -->
 
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="sales_quote_address_save_after">
+        <observer name="redobx_portable_save_point_id_identifier" instance="Redbox\Portable\Observer\SaveShippingAddressObserver"/>
+    </event>
     <event name="order_cancel_after">
         <observer name="redbox_portable_observer_cancel_order_after" instance="Redbox\Portable\Observer\CancelOrderAfter" />
     </event>

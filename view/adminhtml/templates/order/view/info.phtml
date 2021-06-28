@@ -14,8 +14,8 @@
     return '';
 endif; ?>
 
-<?php /** @var \Redbox\Portable\ViewModel\Adminhtml\Order\Shipment $rbViewModel */
-$rbViewModel = $block->getData('rbViewModel'); ?>
+<?php /** @var \Redbox\Portable\ViewModel\Adminhtml\Order\Shipment $rbPortableViewModel */
+$rbPortableViewModel = $block->getData('rbPortableViewModel'); ?>
 
 <?php /* Shipping Method */ ?>
 <div class="admin__page-section-item order-shipping-method">
@@ -44,10 +44,10 @@ $rbViewModel = $block->getData('rbViewModel'); ?>
             <?= /* @noEscape */ __('No shipping information available') ?>
         <?php endif; ?>
 
-        <?php if ($rbViewModel && $rbViewModel->isShippingRedbox($order)) : ?>
+        <?php if ($rbPortableViewModel && $rbPortableViewModel->isShippingRedbox($order)) : ?>
             <ul style="list-style: none; padding-top: 20px;">
-                <?php if ($rbViewModel->getUrlShippingLabel()) : ?>
-                <li><a href="<?php /* @noEscape */ echo $rbViewModel->getUrlShippingLabel() ?>" target="_blank"><?= /* @noEscape */ __('Shipping label') ?></a></li>
+                <?php if ($rbPortableViewModel->getUrlShippingLabel()) : ?>
+                <li><a href="<?php /* @noEscape */ echo $rbPortableViewModel->getUrlShippingLabel() ?>" target="_blank"><?= /* @noEscape */ __('Shipping label') ?></a></li>
                 <?php endif; ?>
             </ul>
         <?php endif; ?>

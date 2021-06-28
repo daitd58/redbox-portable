@@ -10,8 +10,14 @@
 -->
 
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Redbox\Portable\Helper\Points">
+        <arguments>
+            <argument name="storeConfig" xsi:type="object">Magento\Framework\App\Config\ScopeConfigInterface</argument>
+        </arguments>
+    </type>
+
     <type name="Magento\Sales\Api\OrderManagementInterface">
-        <plugin name="PlaceAfterPlugin" type="Redbox\Portable\Plugin\Order\PlaceAfterPlugin" sortOrder="99" />
+        <plugin name="PlaceOrderAfterPlugin" type="Redbox\Portable\Plugin\Order\PlaceOrderAfterPlugin" sortOrder="99" />
     </type>
     <preference for="Redbox\Portable\Api\Data\AddressRepositoryInterface" type="Redbox\Portable\Model\AddressRepository"/>
     <preference for="Redbox\Portable\Api\Data\AddressInterface" type="Redbox\Portable\Model\Address"/>

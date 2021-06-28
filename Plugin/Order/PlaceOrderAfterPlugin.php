@@ -11,7 +11,7 @@ use Redbox\Portable\Helper\Points;
 use Redbox\Portable\Model\Carrier\Redbox as Carrier;
 use Psr\Log\LoggerInterface as PsrLoggerInterface;
 
-class PlaceAfterPlugin
+class PlaceOrderAfterPlugin
 {
     private $helper;
     private $quoteFactory;
@@ -49,11 +49,9 @@ class PlaceAfterPlugin
                 $shippingAddress = $order->getShippingAddress();
                 $billingAddress = $order->getBillingAddress();
                 $redboxAddress = $this->addressRepository->getByQuoteAddressId($quoteAddressId);
-                $pointId = $redboxAddress->getPointId();
                 $payment = $order->getPayment();
                 $method = $payment->getMethodInstance();
                 $methodCode = $method->getCode();
-                $this->logger->info('orderId: ' . $order->getId());
 
                 // do something with order object (Interceptor )
                 if ($apiToken) {
@@ -94,7 +92,6 @@ class PlaceAfterPlugin
                     $this->curl->setHeaders($headers);
                     $this->curl->post($createShipmentUrl, $fields_json);
                     $response = $this->curl->getBody();
-                    $this->logger->info('Response ' . $response);
                     $response_json = json_decode($response, true);
                     if ($response_json['success'] && isset($response_json['url_shipping_label'])) {
                         $redboxAddress->setUrlShippingLabel($response_json['url_shipping_label']);

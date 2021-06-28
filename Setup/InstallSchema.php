@@ -45,11 +45,11 @@ class InstallSchema implements InstallSchemaInterface
      */
     public function install(SchemaSetupInterface $setup, ModuleContextInterface $context)
     {
-        $this->integrationManager->processIntegrationConfig(['RedBoxIntegration']);
+        $this->integrationManager->processIntegrationConfig(['RedBoxPortableIntegration']);
         $setup->startSetup();
         $quoteTable = 'quote';
         $orderTable = 'sales_order';
-        $redboxTable = 'redbox_checkout_address';
+        $redboxTable = 'redbox_portable_checkout_address';
 
         $table = $setup->getConnection()
             ->newTable($setup->getTable($redboxTable))
@@ -87,7 +87,7 @@ class InstallSchema implements InstallSchemaInterface
             )
             ->addForeignKey(
                 $setup->getFkName(
-                    $setup->getTable('redbox_checkout_address'),
+                    $setup->getTable($redboxTable),
                     'shipping_address_id',
                     'quote_address',
                     'address_id'
@@ -97,7 +97,7 @@ class InstallSchema implements InstallSchemaInterface
                 'address_id',
                 Table::ACTION_CASCADE
             )
-            ->setComment('Redbox Shipping Address Table');
+            ->setComment('Redbox Portable Address Table');
         $setup->getConnection()->createTable($table);
 
         $setup->getConnection()->addIndex(
@@ -122,8 +122,8 @@ class InstallSchema implements InstallSchemaInterface
 
         $data = [];
         $statuses = [
-            'redbox_expired'  => __('Redbox Expired'),
-            'redbox_failed'  => __('Redbox Failed'),
+            'redbox_portable_expired'  => __('Redbox Portable Expired'),
+            'redbox_portable_failed'  => __('Redbox Portable Failed'),
         ];
         foreach ($statuses as $code => $info) {
             $data[] = ['status' => $code, 'label' => $info];
@@ -135,14 +135,14 @@ class InstallSchema implements InstallSchemaInterface
             'complete' => [
                 'label' => __('Complete'),
                 'statuses' => [
-                    'redbox_failed' => ['default' => '0']
+                    'redbox_portable_failed' => ['default' => '0']
                 ],
                 'visible_on_front' => true,
             ],
             'processing' => [
                 'label' => __('Processing'),
                 'statuses' => [
-                    'redbox_expired' => ['default' => '0']
+                    'redbox_portable_expired' => ['default' => '0']
                 ],
                 'visible_on_front' => true,
             ]

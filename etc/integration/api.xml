@@ -1,5 +1,5 @@
 <integrations>
-    <integration name="RedBoxIntegration">
+    <integration name="RedBoxPortableIntegration">
         <resources>
             <resource name="Magento_Sales::sales" />
             <resource name="Magento_Sales::sales_operation" />
