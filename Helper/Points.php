@@ -8,13 +8,12 @@
  */
 
 namespace Redbox\Portable\Helper;
+
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Store\Model\ScopeInterface;
 
 /**
  * Class Points
- *
- * @package Redbox\Portable\Helper
  */
 class Points
 {

@@ -96,7 +96,7 @@ class Redbox extends AbstractCarrier implements CarrierInterface
             return false;
         }
 
-        if ($request->getDestCountryId() !== 'SA' || !array_search(strtolower($request->getDestCity()), array_map('strtolower', $cities))) {
+        if ($request->getDestCountryId() != 'SA' || array_search(strtolower($request->getDestCity()), array_map('strtolower', $cities)) == false) {
             return false;
         }
 
