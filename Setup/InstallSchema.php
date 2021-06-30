@@ -168,6 +168,4 @@ class InstallSchema implements InstallSchemaInterface
 
         $setup->endSetup();
     }//end install()
-
-
 }//end class

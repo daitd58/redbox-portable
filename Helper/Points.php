@@ -12,9 +12,6 @@ namespace Redbox\Portable\Helper;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Store\Model\ScopeInterface;
 
-/**
- * Class Points
- */
 class Points
 {
 
@@ -22,7 +19,6 @@ class Points
      * @var ScopeConfigInterface
      */
     public $scopeConfig;
-
 
     /**
      * Points constructor.
@@ -32,9 +28,7 @@ class Points
         ScopeConfigInterface $scopeConfig
     ) {
         $this->scopeConfig = $scopeConfig;
-
     }//end __construct()
-
 
     /**
      * @return bool
@@ -45,9 +39,7 @@ class Points
             'carriers/redboxportable/active',
             ScopeInterface::SCOPE_STORE
         );
-
     }//end isActive()
-
 
     /**
      * @return mixed
@@ -58,7 +50,6 @@ class Points
             'carriers/redboxportable/api_token',
             ScopeInterface::SCOPE_STORE
         );
-
     }//end getApiToken()
 
     /**
@@ -70,7 +61,6 @@ class Points
             'carriers/redboxportable/production',
             ScopeInterface::SCOPE_STORE
         );
-
     }//end getProductionMode()
 
     /**
@@ -84,5 +74,4 @@ class Points
 
         return 'https://stage.redboxsa.com/api/business/v1';
     }//end getApiEndpoint()
-
 }//end class

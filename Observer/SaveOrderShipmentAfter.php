@@ -1,12 +1,11 @@
 <?php
 /**
-  * (c) Redbox Parcel Lockers <thamer@redboxsa.com>
+ * (c) Redbox Parcel Lockers <thamer@redboxsa.com>
  * This source file is subject to the license that is bundled
  * with this source code in the file LICENSE.
  *
  * Built by Redbox Technologies, <thamer@redboxsa.com>
  */
-
 
 namespace Redbox\Portable\Observer;
 
@@ -17,10 +16,6 @@ use Psr\Log\LoggerInterface as PsrLoggerInterface;
 use Redbox\Portable\Helper\Points;
 use Redbox\Portable\Model\Carrier\Redbox as Carrier;
 
-/**
- * Class SaveOrderShipmentAfter
- * @package Redbox\Portable\Observer
- */
 class SaveOrderShipmentAfter implements ObserverInterface
 {
 

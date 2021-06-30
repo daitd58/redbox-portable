@@ -12,9 +12,6 @@ namespace Redbox\Portable\Helper;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Redbox\Portable\Model\Carrier\Redbox as Carrier;
 
-/**
- * Class Data
- */
 class Data extends AbstractHelper
 {
 

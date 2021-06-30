@@ -1,6 +1,6 @@
 <?php
 /**
-  * (c) Redbox Parcel Lockers <thamer@redboxsa.com>
+ * (c) Redbox Parcel Lockers <thamer@redboxsa.com>
  * This source file is subject to the license that is bundled
  * with this source code in the file LICENSE.
  *
@@ -21,10 +21,6 @@ use Redbox\Portable\Api\Data\AddressRepositoryInterface;
 use Redbox\Portable\Model\Carrier\Redbox as Carrier;
 use Redbox\Portable\Api\Data\AddressInterfaceFactory;
 
-/**
- * Class SaveShippingAddressObserver
- * @package Redbox\Portable\Observer
- */
 class SaveShippingAddressObserver implements ObserverInterface
 {
 

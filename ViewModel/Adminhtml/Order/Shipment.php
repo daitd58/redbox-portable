@@ -71,13 +71,13 @@ class Shipment implements \Magento\Framework\View\Element\Block\ArgumentInterfac
         }
 
         return false;
-
     }
 
     /**
      * @return mixed
      */
-    public function getUrlShippingLabel() {
+    public function getUrlShippingLabel()
+    {
         return $this->urlShippingLabel;
     }
 }

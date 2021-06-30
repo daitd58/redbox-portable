@@ -91,12 +91,18 @@ class Redbox extends AbstractCarrier implements CarrierInterface
      */
     public function collectRates(RateRequest $request)
     {
-        $cities = ["الرياض", "Riyadh", "الخرج", "Kharj", "الظهران", "Dhahran", "الجبيل", "Jubail", "الخبر", "Khubar", "راس تنورة", "Ras Tannurah", "الدرعية", "Diriyah", "جدة", "Jeddah", "الدمام", "Dammam", "الهفوف‎", "Al Hofuf"];
+        $cities = [
+            "الرياض", "Riyadh", "الخرج", "Kharj", "الظهران", "Dhahran", "الجبيل",
+            "Jubail", "الخبر", "Khubar", "راس تنورة", "Ras Tannurah", "الدرعية",
+            "Diriyah", "جدة", "Jeddah", "الدمام", "Dammam", "الهفوف‎", "Al Hofuf"
+        ];
         if (!$this->getConfigFlag('active')) {
             return false;
         }
 
-        if ($request->getDestCountryId() != 'SA' || array_search(strtolower($request->getDestCity()), array_map('strtolower', $cities)) == false) {
+        if ($request->getDestCountryId() !== 'SA' || 
+            in_array(strtolower($request->getDestCity()), array_map('strtolower', $cities)) === false
+        ) {
             return false;
         }
 
@@ -136,7 +142,8 @@ class Redbox extends AbstractCarrier implements CarrierInterface
     /**
      * @return bool
      */
-    public function isShippingLabelsAvailable() {
+    public function isShippingLabelsAvailable()
+    {
         return false;
     }
 }

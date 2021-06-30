@@ -1,6 +1,6 @@
 <?php
 /**
-  * (c) Redbox Parcel Lockers <thamer@redboxsa.com>
+ * (c) Redbox Parcel Lockers <thamer@redboxsa.com>
  * This source file is subject to the license that is bundled
  * with this source code in the file LICENSE.
  *
@@ -15,10 +15,6 @@ use Redbox\Portable\Api\Data\AddressInterface;
 use Redbox\Portable\Api\Data\AddressRepositoryInterface;
 use Redbox\Portable\Model\ResourceModel\Checkout\Address as ResourceAddress;
 
-/**
- * Class AddressRepository
- * @package Redbox\Portable\Model
- */
 class AddressRepository implements AddressRepositoryInterface
 {
     /**

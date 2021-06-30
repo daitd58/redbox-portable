@@ -34,10 +34,10 @@ class PlaceOrderAfterPlugin
     }
 
     /**
-    * @param OrderManagementInterface $orderManagementInterface
-    * @param Interceptor $order
-    * @return $order
-    */
+     * @param OrderManagementInterface $orderManagementInterface
+     * @param Interceptor $order
+     * @return $order
+     */
     public function afterPlace(OrderManagementInterface $orderManagementInterface, $order)
     {
         if ($order->getShippingMethod() == Carrier::CODE . '_' . Carrier::CODE && $this->helper->isActive()) {
@@ -73,11 +73,13 @@ class PlaceOrderAfterPlugin
                         'sender_name' => $billingAddress->getFirstName() . ' ' . $billingAddress->getLastName(),
                         'sender_email' => $billingAddress->getEmail(),
                         'sender_phone' => $billingAddress->getTelephone(),
-                        'sender_address' => $billingAddress->getStreet()[0] . ' ' . $billingAddress->getCity() . ' ' . $billingAddress->getCountryId(),
+                        'sender_address' => $billingAddress->getStreet()[0] . ' ' . $billingAddress->getCity() . ' ' . 
+                            $billingAddress->getCountryId(),
                         'customer_name' => $shippingAddress->getFirstName() . ' ' . $shippingAddress->getLastName(),
                         "customer_email" => $shippingAddress->getEmail(),
                         'customer_phone' => $shippingAddress->getTelephone(),
-                        'customer_address' => $shippingAddress->getStreet()[0] . ' ' . $shippingAddress->getCity() . ' ' . $shippingAddress->getCountryId(),
+                        'customer_address' => $shippingAddress->getStreet()[0] . ' ' . $shippingAddress->getCity() . ' ' . 
+                            $shippingAddress->getCountryId(),
                         'cod_currency' => $order->getOrderCurrencyCode(),
                         'cod_amount' => $methodCode == 'cashondelivery' ? $order->getTotalDue() : 0,
                         'items' => $items,
