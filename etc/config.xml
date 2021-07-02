@@ -13,7 +13,10 @@
                 <sort_order>15</sort_order>
                 <model>Redbox\Portable\Model\Carrier\Redbox</model>
                 <specificerrmsg>RedBox is not available. To use this delivery method, please contact us.</specificerrmsg>
-                <sallowspecific>0</sallowspecific>
+                <sallowspecific>1</sallowspecific>
+                <specificcountry>SA</specificcountry>
+                <city>الرياض, Riyadh, الخرج, Kharj, الظهران, Dhahran, الجبيل, Jubail, الخبر, Khubar, راس تنورة, Ras Tannurah, الدرعية, Diriyah, جدة, Jeddah, الدمام, Dammam, الهفوف‎, Al Hofuf</city>
+                <showmethod>0</showmethod>
             </redboxportable>
         </carriers>
     </default>

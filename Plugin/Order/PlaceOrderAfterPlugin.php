@@ -2,7 +2,6 @@
 
 namespace Redbox\Portable\Plugin\Order;
 
-use Magento\Framework\HTTP\Client\Curl;
 use Magento\Quote\Model\QuoteFactory;
 use Magento\Sales\Api\OrderManagementInterface;
 use Magento\Sales\Model\Order\Interceptor;
@@ -10,26 +9,26 @@ use Redbox\Portable\Api\Data\AddressRepositoryInterface;
 use Redbox\Portable\Helper\Points;
 use Redbox\Portable\Model\Carrier\Redbox as Carrier;
 use Psr\Log\LoggerInterface as PsrLoggerInterface;
+use Zend\Http\Client;
+use Zend\Http\Request;
+use Zend\Http\Headers;
 
 class PlaceOrderAfterPlugin
 {
     private $helper;
     private $quoteFactory;
     private $addressRepository;
-    private $curl;
     private $logger;
 
     public function __construct(
         Points $helper,
         QuoteFactory $quoteFactory,
         AddressRepositoryInterface $addressRepository,
-        PsrLoggerInterface $logger,
-        Curl $curl
+        PsrLoggerInterface $logger
     ) {
         $this->helper = $helper;
         $this->quoteFactory = $quoteFactory;
         $this->addressRepository = $addressRepository;
-        $this->curl = $curl;
         $this->logger = $logger;
     }
 
@@ -73,12 +72,13 @@ class PlaceOrderAfterPlugin
                         'sender_name' => $billingAddress->getFirstName() . ' ' . $billingAddress->getLastName(),
                         'sender_email' => $billingAddress->getEmail(),
                         'sender_phone' => $billingAddress->getTelephone(),
-                        'sender_address' => $billingAddress->getStreet()[0] . ' ' . $billingAddress->getCity() . ' ' . 
+                        'sender_address' => $billingAddress->getStreet()[0] . ' ' . $billingAddress->getCity() . ' ' .
                             $billingAddress->getCountryId(),
                         'customer_name' => $shippingAddress->getFirstName() . ' ' . $shippingAddress->getLastName(),
                         "customer_email" => $shippingAddress->getEmail(),
                         'customer_phone' => $shippingAddress->getTelephone(),
-                        'customer_address' => $shippingAddress->getStreet()[0] . ' ' . $shippingAddress->getCity() . ' ' . 
+                        'customer_address' => $shippingAddress->getStreet()[0] . ' ' .
+                            $shippingAddress->getCity() . ' ' .
                             $shippingAddress->getCountryId(),
                         'cod_currency' => $order->getOrderCurrencyCode(),
                         'cod_amount' => $methodCode == 'cashondelivery' ? $order->getTotalDue() : 0,
@@ -86,14 +86,28 @@ class PlaceOrderAfterPlugin
                         'from_platform' => 'magento'
                     ];
 
-                    $fields_json = json_encode($fields);
-                    $headers = [
-                        "Content-Type" => "application/json",
-                        "Authorization" => "Bearer " . $apiToken
+                    $httpHeaders = new Headers();
+                    $httpHeaders->addHeaders([
+                        'Authorization' => 'Bearer ' . $apiToken,
+                        'Accept' => 'application/json',
+                        'Content-Type' => 'application/json'
+                    ]);
+
+                    $request = new Request();
+                    $request->setHeaders($httpHeaders);
+                    $request->setUri($url);
+                    $request->setMethod(Request::METHOD_POST);
+                    $request->setParameterPost($fields);
+                    $client = new Client();
+                    $options = [
+                        'adapter'   => 'Zend\Http\Client\Adapter\Curl',
+                        'curloptions' => [CURLOPT_FOLLOWLOCATION => true],
+                        'maxredirects' => 0,
+                        'timeout' => 60
                     ];
-                    $this->curl->setHeaders($headers);
-                    $this->curl->post($createShipmentUrl, $fields_json);
-                    $response = $this->curl->getBody();
+                    $client->setOptions($options);
+
+                    $response = $client->send($request);
                     $response_json = json_decode($response, true);
                     if ($response_json['success'] && isset($response_json['url_shipping_label'])) {
                         $redboxAddress->setUrlShippingLabel($response_json['url_shipping_label']);

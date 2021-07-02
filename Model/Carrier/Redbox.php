@@ -91,18 +91,18 @@ class Redbox extends AbstractCarrier implements CarrierInterface
      */
     public function collectRates(RateRequest $request)
     {
-        $cities = [
-            "الرياض", "Riyadh", "الخرج", "Kharj", "الظهران", "Dhahran", "الجبيل",
-            "Jubail", "الخبر", "Khubar", "راس تنورة", "Ras Tannurah", "الدرعية",
-            "Diriyah", "جدة", "Jeddah", "الدمام", "Dammam", "الهفوف‎", "Al Hofuf"
-        ];
         if (!$this->getConfigFlag('active')) {
             return false;
         }
 
-        if ($request->getDestCountryId() !== 'SA' || 
-            in_array(strtolower($request->getDestCity()), array_map('strtolower', $cities)) === false
-        ) {
+        $cities = [];
+        if ($this->getConfigData('city')) {
+            $cities = array_map('strtolower', explode(", ", $this->getConfigData('city')));
+        }
+
+        $destCity = strtolower($request->getDestCity());
+
+        if (count($cities) && $destCity && in_array($destCity, $cities) === false) {
             return false;
         }
 

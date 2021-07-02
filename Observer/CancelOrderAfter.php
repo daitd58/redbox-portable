@@ -11,8 +11,10 @@ namespace Redbox\Portable\Observer;
 
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
-use Magento\Framework\HTTP\Client\Curl;
 use Magento\Quote\Model\QuoteFactory;
+use Zend\Http\Client;
+use Zend\Http\Request;
+use Zend\Http\Headers;
 use Psr\Log\LoggerInterface as PsrLoggerInterface;
 use Redbox\Portable\Api\Data\AddressRepositoryInterface;
 use Redbox\Portable\Helper\Points;
@@ -24,16 +26,13 @@ class CancelOrderAfter implements ObserverInterface
     private $helper;
     private $logger;
     private $addressRepository;
-    private $curl;
 
     public function __construct(
         AddressRepositoryInterface $addressRepository,
         QuoteFactory $quoteFactory,
         Points $helper,
-        PsrLoggerInterface $logger,
-        Curl $curl
+        PsrLoggerInterface $logger
     ) {
-        $this->curl = $curl;
         $this->logger = $logger;
         $this->helper = $helper;
         $this->addressRepository = $addressRepository;
@@ -49,24 +48,32 @@ class CancelOrderAfter implements ObserverInterface
             $apiEndpoint   = $this->helper->getApiEndpoint();
             if ($orderId && $apiToken) {
                 $url = $apiEndpoint . '/cancel-shipment-by-order-id';
-                $headers = ["Authorization: Bearer $apiToken", 'Content-Type: application/json'];
                 $fields = [
                     'reference' => $orderId,
                 ];
                 $fields_json = json_encode($fields);
+                $httpHeaders = new Headers();
+                $httpHeaders->addHeaders([
+                    'Authorization' => 'Bearer ' . $apiToken,
+                    'Accept' => 'application/json',
+                    'Content-Type' => 'application/json'
+                ]);
 
-                $curl = curl_init($url);
+                $request = new Request();
+                $request->setHeaders($httpHeaders);
+                $request->setUri($url);
+                $request->setMethod(Request::METHOD_PUT);
+                $request->setParameterPost($fields);
+                $client = new Client();
+                $options = [
+                    'adapter'   => 'Zend\Http\Client\Adapter\Curl',
+                    'curloptions' => [CURLOPT_FOLLOWLOCATION => true],
+                    'maxredirects' => 0,
+                    'timeout' => 60
+                ];
+                $client->setOptions($options);
 
-                curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PUT");
-                curl_setopt($curl, CURLOPT_POSTFIELDS, $fields_json);
-                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-                curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-
-                $response = curl_exec($curl);
-
-                $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-
-                curl_close($curl);
+                $response = $client->send($request);
             }
         }
     }
