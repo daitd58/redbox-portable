@@ -102,7 +102,7 @@ class Redbox extends AbstractCarrier implements CarrierInterface
 
         $destCity = strtolower($request->getDestCity());
 
-        if (count($cities) && $destCity && in_array($destCity, $cities) === false) {
+        if ($this->getConfigData('sallowspecific') && count($cities) && $destCity && in_array($destCity, $cities) === false) {
             return false;
         }
 
