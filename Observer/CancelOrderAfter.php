@@ -15,6 +15,7 @@ use Magento\Quote\Model\QuoteFactory;
 use Zend\Http\Client;
 use Zend\Http\Request;
 use Zend\Http\Headers;
+use Zend\Stdlib\Parameters;
 use Psr\Log\LoggerInterface as PsrLoggerInterface;
 use Redbox\Portable\Api\Data\AddressRepositoryInterface;
 use Redbox\Portable\Helper\Points;
@@ -48,22 +49,20 @@ class CancelOrderAfter implements ObserverInterface
             $apiEndpoint   = $this->helper->getApiEndpoint();
             if ($orderId && $apiToken) {
                 $url = $apiEndpoint . '/cancel-shipment-by-order-id';
-                $fields = [
+                $fields = new Parameters([
                     'reference' => $orderId,
-                ];
+                ]);
                 $fields_json = json_encode($fields);
                 $httpHeaders = new Headers();
                 $httpHeaders->addHeaders([
-                    'Authorization' => 'Bearer ' . $apiToken,
-                    'Accept' => 'application/json',
-                    'Content-Type' => 'application/json'
+                    'Authorization' => 'Bearer ' . $apiToken
                 ]);
 
                 $request = new Request();
                 $request->setHeaders($httpHeaders);
                 $request->setUri($url);
                 $request->setMethod(Request::METHOD_PUT);
-                $request->setParameterPost($fields);
+                $request->setPost($fields);
                 $client = new Client();
                 $options = [
                     'adapter'   => 'Zend\Http\Client\Adapter\Curl',

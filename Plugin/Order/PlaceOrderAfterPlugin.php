@@ -12,6 +12,7 @@ use Psr\Log\LoggerInterface as PsrLoggerInterface;
 use Zend\Http\Client;
 use Zend\Http\Request;
 use Zend\Http\Headers;
+use Zend\Stdlib\Parameters;
 
 class PlaceOrderAfterPlugin
 {
@@ -66,7 +67,7 @@ class PlaceOrderAfterPlugin
                         ]);
                     }
 
-                    $fields = [
+                    $fields = new Parameters([
                         'reference' => $order->getIncrementId(),
                         'original_tracking_number' => $order->getId(),
                         'sender_name' => $billingAddress->getFirstName() . ' ' . $billingAddress->getLastName(),
@@ -84,20 +85,18 @@ class PlaceOrderAfterPlugin
                         'cod_amount' => $methodCode == 'cashondelivery' ? $order->getTotalDue() : 0,
                         'items' => $items,
                         'from_platform' => 'magento'
-                    ];
+                    ]);
 
                     $httpHeaders = new Headers();
                     $httpHeaders->addHeaders([
-                        'Authorization' => 'Bearer ' . $apiToken,
-                        'Accept' => 'application/json',
-                        'Content-Type' => 'application/json'
+                        'Authorization' => 'Bearer ' . $apiToken
                     ]);
 
                     $request = new Request();
                     $request->setHeaders($httpHeaders);
-                    $request->setUri($url);
+                    $request->setUri($createShipmentUrl);
                     $request->setMethod(Request::METHOD_POST);
-                    $request->setParameterPost($fields);
+                    $request->setPost($fields);
                     $client = new Client();
                     $options = [
                         'adapter'   => 'Zend\Http\Client\Adapter\Curl',
@@ -108,9 +107,9 @@ class PlaceOrderAfterPlugin
                     $client->setOptions($options);
 
                     $response = $client->send($request);
-                    $response_json = json_decode($response, true);
-                    if ($response_json['success'] && isset($response_json['url_shipping_label'])) {
-                        $redboxAddress->setUrlShippingLabel($response_json['url_shipping_label']);
+                    $body = json_decode($response->getBody(), true);
+                    if ($body['success'] && isset($body['url_shipping_label'])) {
+                        $redboxAddress->setUrlShippingLabel($body['url_shipping_label']);
                         $redboxAddress->save();
                     }
                 }
